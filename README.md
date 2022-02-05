@@ -20,11 +20,12 @@ From Alphabet Soup’s business team, Beks received a CSV containing more than 3
 * IS_SUCCESSFUL—Was the money used effectively
 
 ## Overview
-  **_Using your knowledge of Pandas and the Scikit-Learn’s StandardScaler(), you’ll need to preprocess the dataset in order to compile, train, and evaluate the neural network model later in Deliverable 2._**
+  **_D1 Using your knowledge of Pandas and the Scikit-Learn’s StandardScaler(), you’ll need to preprocess the dataset in order to compile, train, and evaluate the neural network model later in Deliverable 2._**
+  
+  **_D2 Using your knowledge of TensorFlow, you’ll design a neural network, or deep learning model, to create a binary classification model that can predict if an Alphabet Soup–funded organization will be successful based on the features in the dataset. You’ll need to think about how many inputs there are before determining the number of neurons and layers in your model. Once you’ve completed that step, you’ll compile, train, and evaluate your binary classification model to calculate the model’s loss and accuracy._**
+  
+  **_D3 Using your knowledge of TensorFlow, optimize your model in order to achieve a target predictive accuracy higher than 75%. If you can't achieve an accuracy higher than 75%, you'll need to make at least three attempts to do so._**
 
-The repository purpose is to demonstrate the unsupervised machine learning to analyze a database of cryptocurrencies and create a report including the traded cryptocurrencies
-classified by group according to their features, after this classification we going to perform a report to give to the bank the better option regarding to cryptocurrency
-investment option using the following methods: 
 
 * **Deliverable 1:** Preprocessing Data for a Neural Network Model
 * **Deliverable 2:** Compile, Train, and Evaluate the Model
@@ -36,32 +37,25 @@ investment option using the following methods:
 **_list resources used_**
 
 * **Data Source:** crypto_data.csv and crypto_clustering_starter_code.ipynb
-* **Software:** Jupyter Notebook 6.3.0, MELNV (python environment)
+* **Software:** Jupyter Notebook 6.3.0 (MLENV environment)
 
 ## Results
 
-Compiling, Training, and Evaluating the Model
-This deep-learning neural network model is made of two hidden layers with 80 and 30 neurons respectively.
-The input data has 43 features and 25,724 samples.
-The output layer is made of a unique neuron as it is a binary classification.
-To speed up the training process, we are using the activation function ReLU for the hidden layers. As our output is a binary classification, Sigmoid is used on the output layer.
-For the compilation, the optimizer is adam and the loss function is binary_crossentropy.
-The model accuracy is under 75%. This is not a satisfying performance to help predict the outcome of the charity donations.
-To increase the performance of the model, we applied bucketing to the feature ASK_AMT and organized the different values by intervals.
-We increased the number of neurons on one of the hidden layers, then we used a model with three hidden layers.
-We also tried a different activation function (tanh) but none of these steps helped improve the model's performance.
-
-### **_Data Preprocessing._**
+### **_Data Preprocessing for a Neural Network Model._**
 
 #### Deliverable 1
 
    * **_What variable(s) are considered the target(s) for your model?_**
+   
    The variables considered for my model was IS_SUCCESSFUL
    
    * **_What variable(s) are considered to be the features for your model?_**
+   
    All columns are considered excluding IS_SUCCESSFUL due that is a target of our deep neural network
+   
    * **_What variable(s) are neither targets nor features, and should be removed from the input data?_**
-   I decided to drop EIN and NAME columns ID to be non- beneficial. code used, see below:
+  
+  I decided to drop EIN and NAME columns ID to be non- beneficial. code used, see below:
    
    ```sh
    application_df = application_df.drop(columns=["EIN", "NAME"], axis=1)
@@ -70,8 +64,9 @@ We also tried a different activation function (tanh) but none of these steps hel
 ### **_Compiling, Training, and Evaluating the Model_**
 
 ####  Deliverables 2 & 3
-   * How many neurons, layers, and activation functions did you select for your neural network model, and why?
-   I used 80 and 30 neurons for 2 hidden layers. In the hidden layers I used the "relu" activation function and the activation function for the output layer was "sigmoid", I was looking for well accuracy up 75%.see code below: 
+   * **_How many neurons, layers, and activation functions did you select for your neural network model, and why?_**
+   
+   I used 80 and 30 neurons for 2 hidden layers. In the hidden layers I used the "relu" activation function and the activation function for the output layer was "sigmoid", I was looking for well accuracy up 75%. See code below: 
    ```sh
    # Define the model - deep neural net, i.e., the number of input features and hidden nodes for each layer.
 number_input_features = len(X_train_scaled[0])
@@ -88,19 +83,24 @@ nn.add(tf.keras.layers.Dense(units=nodes_hidden_layer2, activation="relu"))
 nn.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
   ```
   
-   * Were you able to achieve the target model performance?
+   * **_Were you able to achieve the target model performance?_**
+   
 Model was not able to reach the target 75%. The accuracy for my model was 72%.
-   ![](https://github.com/JulioAQuintana/Cryptocurrencies/blob/main/Resources/PCA_reduceDAta.png)
 
-   * What steps did you take to try and increase model performance?
-   In the first part I also droped USE_CASE 
+
+   ![](https://github.com/JulioAQuintana/Neural_Network_Charity_Analysis/blob/main/Resources/accResult.png)
+
+   * **_What steps did you take to try and increase model performance?_**
+
+
+   * In the first part I also droped USE_CASE 
    ```sh
    # Drop the non-beneficial ID columns, 'EIN' and 'NAME'.
 application_df = application_df.drop(columns=["EIN", "NAME", "USE_CASE"], axis=1)
 application_df.head()
 
   ```  
-  Add More neurons and hidden Layers as followin reference
+  * Add More neurons and hidden Layers as followin reference
    ```sh
 # Define the model - deep neural net, i.e., the number of input features and hidden nodes for each layer.
 number_input_features = len(X_train[0])
@@ -127,7 +127,10 @@ nn.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
 nn.summary()
 
   ``` 
-and finally Used Different activation functions like "tanh for the hidden layers as following reference: 
+  
+ * And finally Used Different activation functions like "tanh" for the hidden layers (**_Code reference 1_**) and reduce Epochs to 25 (**_Code reference 2_**) as following reference: 
+
+**_Code reference 1_**
 
    ```sh
 # Define the model - deep neural net, i.e., the number of input features and hidden nodes for each layer.
@@ -155,12 +158,11 @@ nn.add(tf.keras.layers.Dense(units=1, activation="tanh"))
 nn.summary()
 
   ``` 
-and reduce the epochs to 25 
+**_Code reference 2_**
 
    ```sh
 # Train the model reducing 25 epochs
 fit_model = nn.fit(X_train, y_train,epochs=25)
-
   ``` 
  **_I can't reach the target accuracy with the attempts, I got 63% as highest value._**
 
